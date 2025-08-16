@@ -1,0 +1,154 @@
+[
+  {
+    "id": 101,
+    "storeId": 1,
+    "name": "Kaos Polos Premium",
+    "description": "Kaos katun 24s, nyaman dipakai harian.",
+    "price": 79000,
+    "stock": 50,
+    "category": "Fashion",
+    "rating": 4.5,
+    "images": []
+  },
+  {
+    "id": 102,
+    "storeId": 1,
+    "name": "Hoodie Oversize",
+    "description": "Hoodie tebal dan hangat, cocok untuk santai.",
+    "price": 149000,
+    "stock": 30,
+    "category": "Fashion",
+    "rating": 4.6,
+    "images": [
+      "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&q=80"
+    ]
+  },
+  {
+    "id": 103,
+    "storeId": 1,
+    "name": "Sneakers Putih",
+    "description": "Sepatu ringan, desain minimalis.",
+    "price": 239000,
+    "stock": 20,
+    "category": "Sepatu",
+    "rating": 4.4,
+    "images": []
+  },
+  {
+    "id": 104,
+    "storeId": 1,
+    "name": "Celana Jeans Slim Fit",
+    "description": "Jeans stretch, nyaman dipakai sepanjang hari.",
+    "price": 199000,
+    "stock": 40,
+    "category": "Fashion",
+    "rating": 4.3,
+    "images": [
+      "https://images.unsplash.com/photo-1602810318383-e55a5c857b82?w=800&q=80"
+    ]
+  },
+  {
+    "id": 105,
+    "storeId": 1,
+    "name": "Tas Ransel Kulit",
+    "description": "Ransel kulit sintetis elegan untuk kerja atau kuliah.",
+    "price": 269000,
+    "stock": 15,
+    "category": "Aksesoris",
+    "rating": 4.7,
+    "images": [
+      "https://images.unsplash.com/photo-1585386959984-a4155223f6d4?w=800&q=80"
+    ]
+  },
+  {
+    "id": 106,
+    "storeId": 1,
+    "name": "Jam Tangan Analog",
+    "description": "Jam tangan klasik dengan strap kulit.",
+    "price": 329000,
+    "stock": 25,
+    "category": "Aksesoris",
+    "rating": 4.2,
+    "images": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80"
+    ]
+  },
+  {
+    "id": 107,
+    "storeId": 1,
+    "name": "Topi Baseball",
+    "description": "Topi simpel dengan desain minimalis.",
+    "price": 59000,
+    "stock": 60,
+    "category": "Aksesoris",
+    "rating": 4.1,
+    "images": [
+      "https://images.unsplash.com/photo-1593032465171-8f78b0dff8b1?w=800&q=80"
+    ]
+  },
+  {
+    "id": 108,
+    "storeId": 1,
+    "name": "Kemeja Flanel",
+    "description": "Kemeja flanel motif kotak-kotak, cocok untuk gaya santai.",
+    "price": 179000,
+    "stock": 35,
+    "category": "Fashion",
+    "rating": 4.5,
+    "images": [
+      "https://images.unsplash.com/photo-1618354691229-95a7e5e2d70b?w=800&q=80"
+    ]
+  },
+  {
+    "id": 109,
+    "storeId": 1,
+    "name": "Sandal Casual",
+    "description": "Sandal nyaman untuk sehari-hari.",
+    "price": 89000,
+    "stock": 45,
+    "category": "Sepatu",
+    "rating": 4.0,
+    "images": [
+      "https://images.unsplash.com/photo-1595950653177-4b8da5f8e07d?w=800&q=80"
+    ]
+  },
+  {
+    "id": 110,
+    "storeId": 1,
+    "name": "Dompet Kulit",
+    "description": "Dompet pria dengan banyak slot kartu.",
+    "price": 119000,
+    "stock": 70,
+    "category": "Aksesoris",
+    "rating": 4.4,
+    "images": [
+      "https://images.unsplash.com/photo-1603808033192-f6d9f5b6c7d0?w=800&q=80"
+    ]
+  },
+  {
+    "id": 111,
+    "storeId": 1,
+    "name": "Kacamata Hitam",
+    "description": "Kacamata stylish untuk melindungi dari sinar matahari.",
+    "price": 99000,
+    "stock": 55,
+    "category": "Aksesoris",
+    "rating": 4.3,
+    "images": [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80"
+    ]
+  },
+  {
+    "id": 112,
+    "storeId": 1,
+    "name": "Jaket Denim",
+    "description": "Jaket jeans keren untuk tampil lebih stylish.",
+    "price": 229000,
+    "stock": 28,
+    "category": "Fashion",
+    "rating": 4.6,
+    "images": [
+      "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80"
+    ]
+  }
+]

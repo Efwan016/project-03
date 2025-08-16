@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1001,
+    "userId": 3,
+    "items": [
+      {
+        "productId": 101,
+        "qty": 2,
+        "price": 79000
+      }
+    ],
+    "total": 158000,
+    "status": "paid",
+    "shippingStatus": "packed",
+    "createdAt": "2025-08-10T10:00:00Z"
+  }
+]
