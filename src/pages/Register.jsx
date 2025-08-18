@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // ⬅️ tambahin Link
 import { useAuth } from "../store/auth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -35,14 +35,14 @@ export default function Register() {
       <form onSubmit={handleSubmit} className="space-y-3">
         <input 
           type="text"
-          className="w-full p-2 rounded bg-zinc-800"
+          className="w-full p-2 rounded"
           placeholder="Full Name"
           value={name}
           onChange={e => setName(e.target.value)}
         />
         <input 
           type="email"
-          className="w-full p-2 rounded bg-zinc-800"
+          className="w-full p-2 rounded"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
@@ -51,7 +51,7 @@ export default function Register() {
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
-            className="w-full p-2 rounded bg-zinc-800 pr-10"
+            className="w-full p-2 rounded pr-10"
             placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
@@ -67,7 +67,7 @@ export default function Register() {
         <div className="relative">
           <input
             type={showConfirm ? "text" : "password"}
-            className="w-full p-2 rounded bg-zinc-800 pr-10"
+            className="w-full p-2 rounded pr-10"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
@@ -81,7 +81,7 @@ export default function Register() {
         </div>
 
         <select 
-          className="w-full p-2 rounded bg-zinc-800"
+          className="w-full p-2 text-gray-400 rounded"
           value={role}
           onChange={e => setRole(e.target.value)}
         >
@@ -92,8 +92,25 @@ export default function Register() {
 
         {error && <div className="text-red-400 text-sm">{error}</div>}
 
-        <button className="w-full p-2 rounded bg-blue-600 hover:bg-blue-500">Register</button>
+        <button className="w-full p-2 rounded bg-blue-600 hover:bg-blue-500">
+          Register
+        </button>
       </form>
+
+      {/* Tambahan navigasi */}
+      <div className="mt-4 text-sm text-center text-gray-300 space-y-1">
+        <p>
+          Sudah punya akun?{" "}
+          <Link to="/login" className="text-blue-400 hover:underline">
+            Login
+          </Link>
+        </p>
+        <p>
+          <Link to="/forgot-password" className="text-blue-400 hover:underline">
+            Lupa password?
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

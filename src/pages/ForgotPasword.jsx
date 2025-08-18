@@ -17,13 +17,12 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-900">
-      <div className="max-w-sm w-full p-6 rounded shadow-lg bg-zinc-900 text-white">
+      <div className="max-w-sm mx-auto mt-10 p-6 rounded shadow-lg  text-white">
         <h1 className="text-2xl font-bold mb-4">Forgot Password</h1>
         <form onSubmit={handleSubmit} className="space-y-3">
           <input 
             type="email"
-            className="w-full p-2 rounded bg-zinc-800"
+            className="w-full p-2 rounded text-gray-700"
             placeholder="Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -37,6 +36,5 @@ export default function ForgotPassword() {
           Ingat password? <span className="text-blue-500 cursor-pointer" onClick={() => navigate("/login")}>Login</span>
         </p>
       </div>
-    </div>
   );
 }
