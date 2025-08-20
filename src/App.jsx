@@ -30,15 +30,15 @@ import api from "./api";
 import { useProducts } from "./store/products";
 
 function App() {
-  const { setProducts } = useProducts();
+  const { addProduct } = useProducts();
 
-  useEffect(() => {
-    api.init?.();
-    (async () => {
-      const data = await api.getProducts();
-      setProducts(data);
-    })();
-  }, [setProducts]);
+useEffect(() => {
+  api.init?.();
+  (async () => {
+    const data = await api.getProducts();
+    data.forEach(p => addProduct(p)); 
+  })();
+}, [addProduct]);
 
   return (
     <BrowserRouter>
