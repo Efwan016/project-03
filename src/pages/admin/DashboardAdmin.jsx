@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { useProducts } from "../../store/products";
 import { useUsers } from "../../store/users";
 import { useOrders } from "../../store/orders";
-import { Menu, X } from "lucide-react";
 import {
   BarChart,
   Bar,
@@ -15,7 +14,6 @@ import {
 } from "recharts";
 
 export default function DashboardAdmin() {
-  const [open, setOpen] = useState(false);
   const { products, refresh: refreshProducts } = useProducts();
   const { users, refresh: refreshUsers } = useUsers();
   const { orders, refresh: refreshOrders } = useOrders();
@@ -75,55 +73,10 @@ export default function DashboardAdmin() {
     <div className="min-h-screen bg-gray-100 dark:bg-zinc-950 flex flex-col">
       {/* HEADER */}
       <header className="bg-white dark:bg-zinc-900 shadow-md px-4 py-3 flex items-center justify-between">
-        <button
-          onClick={() => setOpen(true)}
-          className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
-        >
-          <Menu size={24} />
-        </button>
         <h2 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-100">
           Welcome, Admin 👋
         </h2>
       </header>
-
-      {/* SIDEBAR POPUP */}
-      {open && (
-        <div className="fixed inset-0 z-40 flex">
-          {/* Background Overlay */}
-          <div
-            className="fixed inset-0 bg-black/50"
-            onClick={() => setOpen(false)}
-          ></div>
-
-          {/* Sidebar Content */}
-          <div className="relative w-64 bg-white dark:bg-zinc-900 shadow-xl p-6 z-50 animate-slideIn">
-            <button
-              onClick={() => setOpen(false)}
-              className="absolute top-4 right-4 p-2 hover:bg-gray-200 dark:hover:bg-zinc-800 rounded-lg"
-            >
-              <X size={20} />
-            </button>
-
-            <nav className="mt-12 space-y-4">
-              <a href="/admin" className="block font-medium hover:text-indigo-600">
-                Dashboard
-              </a>
-              <a href="/admin/users" className="block font-medium hover:text-indigo-600">
-                Manage Users
-              </a>
-              <a href="/admin/stores" className="block font-medium hover:text-indigo-600">
-                Manage Stores
-              </a>
-              <a href="/admin/products" className="block font-medium hover:text-indigo-600">
-                Manage Products
-              </a>
-              <a href="/admin/reports" className="block font-medium hover:text-indigo-600">
-                Reports
-              </a>
-            </nav>
-          </div>
-        </div>
-      )}
 
       {/* MAIN CONTENT */}
       <main className="flex-1 overflow-y-auto p-8">

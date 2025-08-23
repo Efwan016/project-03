@@ -13,6 +13,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import Orders from "./pages/Orders";
 
+import AdminLayout from "./pages/admin/AdminLayout";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import ManageUsers from "./pages/admin/ManageUsers";
 import ManageStores from "./pages/admin/ManageStores";
@@ -32,13 +33,13 @@ import { useProducts } from "./store/products";
 function App() {
   const { addProduct } = useProducts();
 
-useEffect(() => {
-  api.init?.();
-  (async () => {
-    const data = await api.getProducts();
-    data.forEach(p => addProduct(p)); 
-  })();
-}, [addProduct]);
+  useEffect(() => {
+    api.init?.();
+    (async () => {
+      const data = await api.getProducts();
+      data.forEach(p => addProduct(p));
+    })();
+  }, [addProduct]);
 
   return (
     <BrowserRouter>
@@ -68,11 +69,13 @@ useEffect(() => {
             </Route>
 
             <Route element={<RoleRoute allow={['admin']} />}>
-              <Route path="/admin" element={<DashboardAdmin />} />
-              <Route path="/admin/users" element={<ManageUsers />} />
-              <Route path="/admin/stores" element={<ManageStores />} />
-              <Route path="/admin/products" element={<ManageProducts />} />
-              <Route path="/admin/reports" element={<Reports />} />
+              <Route element={<AdminLayout />}>
+                <Route path="/admin" element={<DashboardAdmin />} />
+                <Route path="/admin/users" element={<ManageUsers />} />
+                <Route path="/admin/stores" element={<ManageStores />} />
+                <Route path="/admin/products" element={<ManageProducts />} />
+                <Route path="/admin/reports" element={<Reports />} />
+              </Route>
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

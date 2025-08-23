@@ -51,15 +51,14 @@ const ManageStores = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
-          className="border 
+          className="border p-2 rounded
           border-gray-300 
-          focus:border-blue-500 
+          focus:border-blue-500
           focus:ring-2 
           focus:ring-blue-200 
           bg-white 
-          dark:bg-zinc-800 
-          p-2 rounded-lg 
-          w-1/3 text-gray-800 
+          dark:bg-zinc-800
+          text-gray-800 
           dark:text-gray-100 
           placeholder-gray-400 
           outline-none 
