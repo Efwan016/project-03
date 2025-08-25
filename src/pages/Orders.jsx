@@ -21,13 +21,13 @@ function Orders() {
     return <div>Belum ada pesanan.</div>
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-gray-100">
       <h1 className="text-2xl font-bold mb-4">
         Riwayat Pesanan
       </h1>
       <div className="space y-4">
         {orders.map(o => (
-          <div key={o.id} className="border p-3 rounded bg-zinc-900">
+          <div key={o.id} className="border p-3 rounded bg-slate-400 dark:bg-slate-900 text-gray-900 dark:text-gray-100">
             <div>ID Pesanan: {o.id}</div>
             <div>Tanggal: {new Date(o.createdAt).toLocaleString()}</div>
             <div>Status: <span className="font-bold">{o.status}</span></div>

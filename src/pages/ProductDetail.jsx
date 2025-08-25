@@ -4,19 +4,17 @@ import { useProducts } from "../store/products";
 import { useCart } from "../store/cart";
 import api from "../api";
 import { formatCurrency } from "../utils/formatCurrency";
+import { toast } from "react-toastify";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { products, refresh } = useProducts();
   const [product, setProduct] = useState(null);
-  const { addItem } = useCart();
+   const addItem = useCart((s) => s.addItem);
 
   useEffect(() => {
     (async () => {
-      // refresh store kalau kosong
       if (products.length === 0) await refresh();
-
-      // cek dulu di store/localStorage
       let found = products.find((p) => String(p.id) === id);
 
       // fallback ke API kalau gak ketemu
@@ -33,9 +31,12 @@ export default function ProductDetail() {
   }, [id, products, refresh]);
 
   if (!product) return <div className="text-center mt-10 text-gray-500">Produk tidak ditemukan.</div>;
-
-  // pastikan bisa pakai gambar dari upload seller (base64) atau API
   const productImage = product.image || product.images?.[0] || "/placeholder.png";
+
+  const handleAddToCart = () => {
+    addItem(product, 1);
+    toast.success(`🛒 ${product.name} berhasil ditambahkan ke keranjang!`);
+  };
 
   return (
     <div className="grid gap-6 md:grid-cols-2 p-6">
@@ -50,7 +51,7 @@ export default function ProductDetail() {
         <div className="text-xl font-bold mt-2">{formatCurrency(product.price)}</div>
         <p className="mt-4 text-gray-700">{product.description || "No description."}</p>
         <button
-          onClick={() => addItem(product, 1)}
+          onClick={handleAddToCart}
           className="mt-6 px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 text-white font-medium"
         >
           Tambah ke Keranjang

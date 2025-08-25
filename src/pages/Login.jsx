@@ -1,21 +1,24 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom"; 
 import { useAuth } from "../store/auth";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const ok = await login(email, password);
+    
     if (!ok) {
-      setError("Email atau password salah");
+      toast.error("❌ Email atau password salah!");
       return;
     }
+
+    toast.success("✅ Login berhasil, selamat datang!");
     navigate("/");
   };
 
@@ -36,13 +39,11 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {error && <div className="text-red-400 text-sm">{error}</div>}
         <button className="w-full p-2 rounded bg-blue-600 hover:bg-blue-500">
           Masuk
         </button>
       </form>
 
-      {/* Tambahan navigasi */}
       <div className="mt-4 text-sm text-center text-gray-300 space-y-1">
         <p>
           Belum punya akun?{" "}

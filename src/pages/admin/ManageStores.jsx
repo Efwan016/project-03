@@ -51,7 +51,7 @@ const ManageStores = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
         <select
-          className="border p-2 rounded
+          className="table-border p-2 rounded
           border-gray-300 
           focus:border-blue-500
           focus:ring-2 

@@ -28,6 +28,9 @@ import SellerOrders from "./pages/seller/SellerOrders";
 
 import { PrivateRoute, RoleRoute } from "./components/common/RouteGuards";
 import api from "./api";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import "./App.css";
 import { useProducts } from "./store/products";
 
 function App() {
@@ -43,7 +46,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100">
         <Navbar />
         <main className="flex-1 max-w-6xl mx-auto w-full p-4">
           <Routes>
@@ -83,6 +86,18 @@ function App() {
         </main>
         <Footer />
       </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </BrowserRouter>
   );
 }

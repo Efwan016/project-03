@@ -35,7 +35,7 @@ export default function Products() {
 
 
   return (
-    <div className="p-6">
+     <div className="min-h-screen bg-white dark:bg-zinc-900 text-gray-900 dark:text-gray-100 p-6">
       <h1 className="text-2xl font-bold mb-6">Products</h1>
       {allProducts.length === 0 ? (
         <p className="text-gray-500">Belum ada produk.</p>

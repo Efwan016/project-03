@@ -39,7 +39,7 @@ export default function ManageUsers() {
         <select
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
-          className="border p-2 rounded"
+          className="border border-black dark:border-white p-2 rounded"
         >
           <option value="all">All Roles</option>
           <option value="user">User</option>
@@ -49,33 +49,33 @@ export default function ManageUsers() {
       </div>
 
       {/* Table Users */}
-      <table className="w-full border-collapse border">
+      <table className="w-full border-collapse border border-black dark:border-white p-2">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">#</th>
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Role</th>
-            <th className="border p-2">Status</th>
-            <th className="border p-2">Action</th>
+           <tr className="bg-gray-200 dark:bg-gray-800">
+            <th className="border border-black dark:border-white p-2 text-black dark:text-white">#</th>
+            <th className="border border-black dark:border-white p-2 text-black dark:text-white">Name</th>
+            <th className="border border-black dark:border-white p-2 text-black dark:text-white">Email</th>
+            <th className="border border-black dark:border-white p-2 text-black dark:text-white">Role</th>
+            <th className="border border-black dark:border-white p-2 text-black dark:text-white">Status</th>
+            <th className="border border-black dark:border-white p-2 text-black dark:text-white">Action</th>
           </tr>
         </thead>
         <tbody>
           {filteredUsers.length > 0 ? (
             filteredUsers.map((u, i) => (
               <tr key={u.id} className="text-center">
-                <td className="border p-2">{i + 1}</td>
-                <td className="border p-2">{u.name}</td>
-                <td className="border p-2">{u.email}</td>
-                <td className="border p-2 capitalize">{u.role}</td>
-                <td className="border p-2">
+                <td className="border border-black dark:border-white p-2 text-black dark:text-white">{i + 1}</td>
+                <td className="border border-black dark:border-white p-2 text-black dark:text-white">{u.name}</td>
+                <td className="border border-black dark:border-white p-2 text-black dark:text-white">{u.email}</td>
+                <td className="border border-black dark:border-white p-2 text-black dark:text-white capitalize">{u.role}</td>
+                <td className="border border-black dark:border-white p-2 text-black dark:text-white">
                   {u.banned ? (
                     <span className="text-red-500 font-semibold">Banned</span>
                   ) : (
                     <span className="text-green-600 font-semibold">Active</span>
                   )}
                 </td>
-                <td className="border p-2 flex gap-2 justify-center">
+                <td className="border border-black dark:border-white p-2 text-black dark:text-white flex gap-2 justify-center">
                   {u.role !== "admin" && (
                     <button
                       onClick={() => toggleBan(u)}

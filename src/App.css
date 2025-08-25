@@ -14,3 +14,24 @@ html, body, #root {
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.Toastify__toast {
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.Toastify__toast--success {
+  background: rgb(98, 199, 250) !important;
+  color: #282c34 !important;
+}
+
+.Toastify__toast--error {
+  background: #e15e5e !important;
+  color: #282c34 !important;
+}
+
+.Toastify__toast-body {
+  font-weight: 500;
+}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { Menu, Users, Package, FileText, Home } from "lucide-react";
+import { Menu, Users, Package, FileText, Home, Store } from "lucide-react";
 
 export default function AdminLayout() {
   const [open, setOpen] = useState(true);
@@ -43,6 +43,13 @@ export default function AdminLayout() {
           >
             <Users size={28} />
             {open && <span>Manage Users</span>}
+          </Link>
+          <Link
+            to="/admin/stores"
+            className="flex items-center gap-3 p-2 rounded hover:bg-gray-100 dark:hover:bg-zinc-800"
+          >
+            <Store size={28} />
+            {open && <span>Manage Store</span>}
           </Link>
           <Link
             to="/admin/products"
