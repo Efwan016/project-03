@@ -110,7 +110,7 @@ function Checkout() {
           </select>
         </div>
         <button type="submit"
-          className="px-4 py-2 bg-green-600 rounded hover:bg-green-500"> Bayar {formatCurrency(total)}
+          className="px-4 py-2 bg-green-600 rounded hover:bg-green-500"> Bayar {formatCurrency(total())}
         </button>
       </form>
     </div>

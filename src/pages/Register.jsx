@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom"; // ⬅️ tambahin Link
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../store/auth";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify"; // ⬅️ pastikan sudah install react-toastify
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -15,8 +17,10 @@ export default function Register() {
   const navigate = useNavigate();
   const { register } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
     if (!name || !email || !password || !confirmPassword) {
       setError("Semua field wajib diisi");
       return;
@@ -25,24 +29,32 @@ export default function Register() {
       setError("Password dan konfirmasi password tidak sama");
       return;
     }
-    register({ name, email, password, role });
-    navigate("/login");
+
+    try {
+      await register({ name, email, password, role });
+      toast.success("✅ Registrasi berhasil! Silakan login.");
+      navigate("/login");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
     <div className="max-w-sm mx-auto mt-10 p-6 rounded shadow-lg bg-zinc-900 text-white">
       <h1 className="text-2xl font-bold mb-4">Register</h1>
       <form onSubmit={handleSubmit} className="space-y-3">
-        <input 
+        {/* Nama */}
+        <input
           type="text"
-          className="w-full p-2 rounded"
+          className="w-full p-2 rounded bg-zinc-800"
           placeholder="Full Name"
           value={name}
           onChange={e => setName(e.target.value)}
         />
-        <input 
+        {/* Email */}
+        <input
           type="email"
-          className="w-full p-2 rounded"
+          className="w-full p-2 rounded bg-zinc-800"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
@@ -51,7 +63,7 @@ export default function Register() {
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
-            className="w-full p-2 rounded pr-10"
+            className="w-full p-2 rounded pr-10 bg-zinc-800"
             placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
@@ -67,7 +79,7 @@ export default function Register() {
         <div className="relative">
           <input
             type={showConfirm ? "text" : "password"}
-            className="w-full p-2 rounded pr-10"
+            className="w-full p-2 rounded pr-10 bg-zinc-800"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
@@ -80,8 +92,9 @@ export default function Register() {
           </span>
         </div>
 
-        <select 
-          className="w-full p-2 text-gray-400 rounded"
+        {/* Role */}
+        <select
+          className="w-full p-2 bg-zinc-800 text-gray-400 rounded"
           value={role}
           onChange={e => setRole(e.target.value)}
         >
@@ -97,7 +110,7 @@ export default function Register() {
         </button>
       </form>
 
-      {/* Tambahan navigasi */}
+      {/* Navigasi */}
       <div className="mt-4 text-sm text-center text-gray-300 space-y-1">
         <p>
           Sudah punya akun?{" "}

@@ -31,7 +31,9 @@ export default function Cart() {
           </div>
         </div>
       ))}
-      <div className="text-right font-bold">Total: {formatCurrency(total)}</div>
+      <div className="text-right font-bold">
+        Total: {formatCurrency(total())}
+      </div>
       <div className="text-right">
         <Link to="/checkout" className="inline-block mt-2 px-4 py-2 rounded bg-green-600 hover:bg-green-500">Checkout</Link>
       </div>

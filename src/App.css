@@ -35,3 +35,25 @@ html, body, #root {
 .Toastify__toast-body {
   font-weight: 500;
 }
+
+.ReactLoadingSkeleton, .SkeletonTheme {
+  border-radius: 12px; /* radius semua skeleton */
+  font-family: 'Inter', sans-serif;
+}
+
+/* Skeleton khusus light/dark mode */
+.SkeletonTheme-light .ReactLoadingSkeleton {
+  background-color: #e9ecef; /* base color */
+  background-image: linear-gradient(90deg, #e9ecef, #f8f9fa, #e9ecef); /* highlight */
+}
+
+.SkeletonTheme-dark .ReactLoadingSkeleton {
+  background-color: #2a2a2a; 
+  background-image: linear-gradient(90deg, #2a2a2a, #3a3a3a, #2a2a2a);
+}
+
+/* Optional: height & width default */
+.ReactLoadingSkeleton {
+  height: 150px;
+  width: 100%;
+}
