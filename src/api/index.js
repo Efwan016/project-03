@@ -5,4 +5,5 @@ import remote from "./remote";
 const useRemote = false;
 
 const api = useRemote ? remote : local;
+api.init?.();
 export default api;

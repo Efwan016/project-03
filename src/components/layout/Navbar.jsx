@@ -9,19 +9,17 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const cartStore = useCart();
+  const [search, setSearch] = useState("");
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
   const [showNotif, setShowNotif] = useState(false);
-  const notifications = [
-    { id: 1, message: "New order received" },
-    { id: 2, message: "Payment confirmed" },
-  ];
-
-  // pisahin ref desktop & mobile
+  const [notifications, setNotifications] = useState([]);
   const notifRefDesktop = useRef(null);
   const notifRefMobile = useRef(null);
 
+  // ==== Theme init ====
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     const root = document.documentElement;
@@ -46,16 +44,146 @@ export default function Navbar() {
     setIsDark(dark);
   };
 
-  const orderCount = user?.role === "seller" ? 5 : 0;
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      navigate(`/products?search=${encodeURIComponent(search.trim())}`);
+    }
+  };
 
-  // handle klik di luar notif
+  // ==== Build notifications per akun & role ====
+  useEffect(() => {
+    if (!user) {
+      setNotifications([]);
+      return;
+    }
+
+    const notifList = [];
+
+    // Safely parse LS
+    const allOrders = (() => {
+      try {
+        return JSON.parse(localStorage.getItem("orders")) || [];
+      } catch {
+        return [];
+      }
+    })();
+
+    const allCarts = (() => {
+      try {
+        return JSON.parse(localStorage.getItem("carts")) || [];
+      } catch {
+        return [];
+      }
+    })();
+
+    const now = new Date();
+
+    if (user.role === "user") {
+      // Unpaid carts milik user ini
+      const unpaid = allCarts.filter(
+        (c) => c.userId === user.id && c.status === "Unpaid"
+      );
+      unpaid.forEach((c) => {
+        notifList.push({
+          id: `unpaid-${c.id}`,
+          type: "Unpaid",
+          message: `💸 Order #${c.id} belum dibayar`,
+          target: "/cart",
+        });
+      });
+
+      // Status order milik user ini
+      allOrders
+        .filter((o) => o.userId === user.id)
+        .forEach((o) => {
+          const start = o.startDate ? new Date(o.startDate) : null;
+          const end = o.endDate ? new Date(o.endDate) : null;
+
+          if (o.status === "Pending") {
+            notifList.push({
+              id: `pending-${o.id}`,
+              type: "Pending",
+              message: `🕒 Order #${o.id} menunggu konfirmasi`,
+              target: "/orders",
+            });
+          } else if (
+            o.status === "Approved" &&
+            start &&
+            end &&
+            start <= now &&
+            end >= now
+          ) {
+            notifList.push({
+              id: `active-${o.id}`,
+              type: "Active",
+              message: `🟢 Order #${o.id} sedang diproses`,
+              target: "/orders",
+            });
+          } else if (o.status === "Shipped") {
+            notifList.push({
+              id: `shipped-${o.id}`,
+              type: "Shipped",
+              message: `🚚 Order #${o.id} sedang dikirim`,
+              target: "/orders",
+            });
+          } else if (o.status === "Delivered") {
+            notifList.push({
+              id: `delivered-${o.id}`,
+              type: "Delivered",
+              message: `📦 Order #${o.id} sudah sampai`,
+              target: "/orders",
+            });
+          }
+        });
+    } else if (user.role === "seller") {
+      // Order baru masuk ke seller ini
+      allOrders
+        .filter((o) => o.sellerId === user.id && o.status === "Pending")
+        .forEach((o) => {
+          notifList.push({
+            id: `new-${o.id}`,
+            type: "NewOrder",
+            message: `📦 Order #${o.id} dari ${o.buyerName || "customer"} menunggu konfirmasi`,
+            target: "/seller-orders",
+          });
+        });
+
+      // Order paid / siap kirim
+      allOrders
+        .filter((o) => o.sellerId === user.id && o.status === "Approved")
+        .forEach((o) => {
+          notifList.push({
+            id: `paid-${o.id}`,
+            type: "Paid",
+            message: `💸 Order #${o.id} sudah dibayar, siap dikirim`,
+            target: "/seller-orders",
+          });
+        });
+    } else if (user.role === "admin") {
+      // Contoh notif admin
+      notifList.push({
+        id: "report-1",
+        type: "Report",
+        message: "⚠️ Ada laporan baru dari pengguna",
+        target: "/admin/reports",
+      });
+    }
+
+    setNotifications(notifList);
+    // simpan per akun (opsional, untuk caching / debug)
+    localStorage.setItem(`notifs_${user.id}`, JSON.stringify(notifList));
+  }, [user]);
+
+  // ==== Click outside to close notif ====
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
-        (notifRefDesktop.current && notifRefDesktop.current.contains(e.target)) ||
+        (notifRefDesktop.current &&
+          notifRefDesktop.current.contains(e.target)) ||
         (notifRefMobile.current && notifRefMobile.current.contains(e.target))
       ) {
-        return; // kalau klik di dalam notif, jangan nutup
+        return;
       }
       setShowNotif(false);
     };
@@ -63,25 +191,88 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // ==== Derived counts ====
+  const sellerPendingCount = (() => {
+    if (!user || user.role !== "seller") return 0;
+    try {
+      const allOrders = JSON.parse(localStorage.getItem("orders")) || [];
+      return allOrders.filter(
+        (o) => o.sellerId === user.id && o.status === "Pending"
+      ).length;
+    } catch {
+      return 0;
+    }
+  })();
+
+  // ==== Notif Dropdown ====
+  const NotifDropdown = ({ mobile = false }) => (
+    <div
+      className={`absolute ${mobile ? "left-0" : "right-0"
+        } mt-2 w-72 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded shadow-lg z-50`}
+    >
+      {notifications.length === 0 ? (
+        <div className="p-3 text-gray-500">No notifications</div>
+      ) : (
+        <ul className="max-h-80 overflow-auto">
+          {notifications.map((notif) => (
+            <li
+              key={notif.id}
+              onClick={() => {
+                setShowNotif(false);
+                if (notif.target) navigate(notif.target);
+              }}
+              className="p-3 hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer flex justify-between items-center"
+            >
+              <div className="pr-2">{notif.message}</div>
+              <span className="text-[10px] uppercase tracking-wide px-2 py-1 rounded bg-gray-300 dark:bg-gray-600">
+                {notif.type}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
   return (
     <header className="border-b border-gray-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
       <div className="max-w-6xl mx-auto p-4 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="font-bold text-xl">
+          Adzani Market
+        </Link>
 
-        {/* logo */}
-        <Link to="/" className="font-bold text-xl">Adzani Market</Link>
-
-        {/* desktop nav */}
+        <form onSubmit={handleSearch} className="hidden md:flex flex-1 mx-4">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-zinc-800 dark:border-zinc-700 dark:text-white"
+          />
+        </form>
+        {/* DESKTOP NAV */}
         <nav className="hidden md:flex gap-4 items-center">
-
           <button
             onClick={toggleDarkMode}
             className="px-3 py-1 rounded bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white"
+            aria-label="Toggle dark mode"
           >
             {isDark ? "🌙" : "☀️"}
           </button>
 
-          <NavLink to="/products" className={({ isActive }) => isActive ? "underline" : ""}>Products</NavLink>
-          <NavLink to="/orders" className={({ isActive }) => isActive ? "underline" : ""}>History</NavLink>
+          <NavLink
+            to="/products"
+            className={({ isActive }) => (isActive ? "underline" : "")}
+          >
+            Products
+          </NavLink>
+          <NavLink
+            to="/orders"
+            className={({ isActive }) => (isActive ? "underline" : "")}
+          >
+            History
+          </NavLink>
 
           {user?.role === "user" && (
             <NavLink to="/cart" className="flex items-center gap-1">
@@ -91,16 +282,17 @@ export default function Navbar() {
 
           {user?.role === "seller" && (
             <NavLink to="/seller-orders" className="flex items-center gap-1">
-              📦 Orders ({orderCount})
+              📦 Orders ({sellerPendingCount})
             </NavLink>
           )}
 
-          {/* tombol notif desktop */}
+          {/* Notif Desktop */}
           {user && (
             <div className="relative" ref={notifRefDesktop}>
               <button
-                onClick={() => setShowNotif(!showNotif)}
+                onClick={() => setShowNotif((s) => !s)}
                 className="px-3 py-1 rounded bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white relative"
+                aria-label="Open notifications"
               >
                 🔔
                 {notifications.length > 0 && (
@@ -109,19 +301,7 @@ export default function Navbar() {
                   </span>
                 )}
               </button>
-              {showNotif && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded shadow-lg z-50">
-                  {notifications.length === 0 ? (
-                    <div className="p-2 text-gray-500">No notifications</div>
-                  ) : (
-                    notifications.map(n => (
-                      <div key={n.id} className="p-2 border-b border-gray-100 dark:border-zinc-700">
-                        {n.message}
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
+              {showNotif && <NotifDropdown />}
             </div>
           )}
 
@@ -132,7 +312,11 @@ export default function Navbar() {
             </>
           ) : (
             <button
-              onClick={() => { logout(); navigate("/"); }}
+              onClick={() => {
+                logout();
+                setNotifications([]);
+                navigate("/");
+              }}
               className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white"
             >
               Logout
@@ -140,12 +324,12 @@ export default function Navbar() {
           )}
         </nav>
 
-        {/* mobile: dark mode + notif + hamburger */}
+        {/* MOBILE: dark mode + notif (kiri) + cart/seller + hamburger */}
         <div className="md:hidden flex items-center gap-2">
-
           <button
             onClick={toggleDarkMode}
             className="px-3 py-1 rounded bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white"
+            aria-label="Toggle dark mode"
           >
             {isDark ? "🌙" : "☀️"}
           </button>
@@ -153,8 +337,9 @@ export default function Navbar() {
           {user && (
             <div className="relative" ref={notifRefMobile}>
               <button
-                onClick={() => setShowNotif(!showNotif)}
+                onClick={() => setShowNotif((s) => !s)}
                 className="px-3 py-1 rounded bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-white relative"
+                aria-label="Open notifications"
               >
                 🔔
                 {notifications.length > 0 && (
@@ -163,34 +348,36 @@ export default function Navbar() {
                   </span>
                 )}
               </button>
-              {showNotif && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded shadow-lg z-50">
-                  {notifications.length === 0 ? (
-                    <div className="p-2 text-gray-500">No notifications</div>
-                  ) : (
-                    notifications.map(n => (
-                      <div key={n.id} className="p-2 border-b border-gray-100 dark:border-zinc-700">
-                        {n.message}
-                      </div>
-                    ))
-                  )}
-                </div>
-              )}
+              {showNotif && <NotifDropdown mobile />}
             </div>
           )}
 
-          <button onClick={() => setMenuOpen(!menuOpen)}>
+          {/* Cart (user) */}
+          {user?.role === "user" && (
+            <NavLink to="/cart" className="flex items-center gap-2">
+              <FaShoppingCart /> ({cartStore.totalQty()})
+            </NavLink>
+          )}
+
+          {/* Seller orders shortcut (mobile) */}
+          {user?.role === "seller" && (
+            <NavLink to="/seller-orders" className="flex items-center gap-1">
+              📦 ({sellerPendingCount})
+            </NavLink>
+          )}
+
+          <button onClick={() => setMenuOpen((m) => !m)} aria-label="Open menu">
             {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* mobile menu */}
+      {/* MOBILE MENU */}
       {menuOpen && (
         <nav className="md:hidden flex flex-col gap-4 p-4 border-t border-gray-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
           <NavLink to="/products">Products</NavLink>
           <NavLink to="/orders">History</NavLink>
-          
+
           {!user ? (
             <>
               <NavLink to="/login">Login</NavLink>
@@ -198,7 +385,12 @@ export default function Navbar() {
             </>
           ) : (
             <button
-              onClick={() => { logout(); navigate("/"); setMenuOpen(false); }}
+              onClick={() => {
+                logout();
+                setNotifications([]);
+                setMenuOpen(false);
+                navigate("/");
+              }}
               className="px-3 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-white"
             >
               Logout

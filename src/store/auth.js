@@ -1,11 +1,12 @@
 import { create } from "zustand";
-import api from "../api";
 
 export const useAuth = create((set) => ({
   user: JSON.parse(localStorage.getItem("auth_user")) || null,
 
   async login(email, password) {
-    const u = await api.login?.(email, password);
+    const users = JSON.parse(localStorage.getItem("auth_users") || "[]");
+    const u = users.find(u => u.email === email && u.password === password);
+
     if (u) {
       localStorage.setItem("auth_user", JSON.stringify(u));
       set({ user: u });

@@ -65,6 +65,16 @@ const LocalApi = {
     const orders = JSON.parse(localStorage.getItem(KEYS.ORDERS) || "[]");
     return orders.filter(o => String(o.userId) === String(userId));
   },
+
+  async getCategories() {
+    const items = JSON.parse(localStorage.getItem(KEYS.PRODUCTS) || "[]");
+    // ambil kategori unik dari product
+    const categories = [...new Set(items.map(p => p.category))];
+    return categories;
+  },
+
 };
+
+
 
 export default LocalApi;
