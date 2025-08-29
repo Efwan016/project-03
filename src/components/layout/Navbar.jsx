@@ -295,6 +295,16 @@ export default function Navbar() {
             </NavLink>
           )}
 
+          {user?.role === "seller" && (
+            <NavLink
+              to="/seller/profile"
+              className={({ isActive }) => (isActive ? "underline" : "")}
+            >
+              Profile
+            </NavLink>
+          )}
+
+
           {/* Notif Desktop */}
           {user && (
             <div className="relative" ref={notifRefDesktop}>
@@ -384,7 +394,15 @@ export default function Navbar() {
       {/* MOBILE MENU */}
       {menuOpen && (
         <nav className="md:hidden flex flex-col gap-4 p-4 border-t border-gray-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-          <NavLink to="/profile">Profile</NavLink>
+          {user?.role === "users" && (
+             <NavLink to="/profile">Profile</NavLink>
+          )}
+          {user?.role === "seller" && (
+            <>
+              <Link to="/seller/profile">Seller Profile</Link>
+              <Link to="/seller/products">My Products</Link>
+            </>
+          )}
           <NavLink to="/products">Products</NavLink>
           <NavLink to="/orders">History</NavLink>
 

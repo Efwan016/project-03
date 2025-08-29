@@ -6,6 +6,7 @@ import Footer from "./components/layout/Footer";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
 import Profile from "./pages/Profile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -24,6 +25,7 @@ import ManageProducts from "./pages/admin/ManageProducts";
 import Reports from "./pages/admin/Reports";
 
 import DashboardSeller from "./pages/seller/DashboardSeller";
+import SellerProfile from "./pages/seller/SellerProfile";
 import MyProducts from "./pages/seller/MyProducts";
 import AddProduct from "./pages/seller/AddProduct";
 import EditProduct from "./pages/seller/EditProduct";
@@ -61,6 +63,7 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/faq" element={<FAQ />} />
 
             <Route element={<PrivateRoute />}>
               <Route path="/cart" element={<Cart />} />
@@ -71,6 +74,7 @@ function App() {
 
             <Route element={<RoleRoute allow={['seller']} />}>
               <Route path="/seller" element={<DashboardSeller />} />
+              <Route path="/seller/profile" element={<SellerProfile />} />
               <Route path="/seller/products" element={<MyProducts />} />
               <Route path="/seller/products/add" element={<AddProduct />} />
               <Route path="/seller/products/:id/edit" element={<EditProduct />} />

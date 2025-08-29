@@ -1,70 +1,153 @@
-# Getting Started with Create React App
+# 🛒 E-Commerce Platform (React + Zustand + Tailwind)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Multi-role e-commerce web app built with **React**.  
+Supports **User**, **Seller**, and **Admin** roles with role-based routing, product management, order flows, and API integration.  
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 👤 User
+- Browse & search products
+- Product detail page
+- Cart → Checkout flow
+- Order history & status tracking
+- Infinite scroll + skeleton loading
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 🏪 Seller
+- Seller profile (edit avatar, store info, contact)
+- Manage products (CRUD local/dummy)
+- Dashboard with sales/order stats
+- Order management (status update)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 👑 Admin
+- Admin dashboard
+- Manage users (ban/unban)
+- Manage stores & products
+- Full moderation across the platform
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🧱 Tech Stack
+- **React + React Router**
+- **Zustand** (state management + auth)
+- **Tailwind CSS + Bootstrap** (styling & grid)
+- **Lucide React & Font Awesome** (icons)
+- **react-toastify** (notifications)
+- **react-loading-skeleton** (loading states)
+- **Recharts** (dashboard charts)
+- **jspdf-autotable** (PDF export)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🔐 Authentication
+- Auth state persisted in **localStorage**
+- **Role-based access**: `user`, `seller`, `admin`
+- Guards: `PrivateRoute` + `RoleRoute`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 📂 Project Structure
+src/
+├── assets/ # images, icons
+├── components/ # shared components (Navbar, Footer, etc.)
+├── pages/ # route pages (Home, Products, About, Contact, FAQ, etc.)
+├── seller/ # seller dashboard pages
+├── admin/ # admin dashboard pages
+├── store/ # zustand stores (auth, etc.)
+├── utils/ # helpers, API hooks (useRemote, etc.)
+├── App.js # main router
+└── main.jsx # entrypoint
 
-### `npm run eject`
+yaml
+Copy code
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🧪 Dummy Data
+- `users.json` — sample users (`user`, `seller`, `admin`)
+- `stores.json` — store data (linked to seller)
+- `products.json` — product catalog
+- `orders.json` — user orders  
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Stored in `/public/data/` or seeded into **localStorage**.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## 🌐 API Integration
+- Products & categories fetched from **Dummy JSON API**
+- LocalStorage fallback for:
+  - `orders` (checkout)
+  - `auth` (login/register)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## ⚡ Setup & Run
 
-### Code Splitting
+### 1. Clone the repo
+```bash
+git clone https://github.com/yourusername/ecommerce-app.git
+cd ecommerce-app
+2. Install dependencies
+bash
+Copy code
+npm install
+3. Run dev server
+bash
+Copy code
+npm run dev
+App runs on http://localhost:5173/ (Vite default)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+📊 Roadmap / Phases
+Phase 1 — Foundation
+React + Router setup
 
-### Analyzing the Bundle Size
+Zustand store
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Auth (login/register/logout)
 
-### Making a Progressive Web App
+Static pages (About, Contact, FAQ)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Phase 2 — User Features
+Product listing + detail
 
-### Advanced Configuration
+Cart & checkout
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Order history
 
-### Deployment
+Phase 3 — Seller Features
+Seller dashboard
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Manage products
 
-### `npm run build` fails to minify
+Sales statistics
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Phase 4 — Admin Features
+Admin dashboard
+
+User & store management
+
+Product moderation
+
+Phase 5 — UI/UX Enhancements
+Dark mode
+
+Skeleton loading
+
+Infinite scroll
+
+Responsive navbar & footer
+
+Toast notifications
+
+Phase 6 — API Integration
+Fetch products/categories via API
+
+LocalStorage fallback for unsupported data
+
+📝 License
+
+Vrz License © 2025 — EFWAN RIZALDI
+
+
+---
